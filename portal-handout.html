@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#5B3DF5">
+<title>인쇄용 유인물 · AI와 함께 만드는 우리 반 안내판</title>
+<style>
+  :root{--accent:#5B3DF5;--accent-dark:#4A2FD6;--accent-soft:#EDE9FE;--ink:#171A2E;
+        --muted:#62648A;--line:#CFCFE0;--bg:#F3F3F8}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.6;font-size:15px;word-break:keep-all;
+    font-family:-apple-system,"Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+  nav{background:var(--ink);position:sticky;top:0;z-index:20}
+  nav .in{max-width:860px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;gap:5px}
+  nav a{color:#A8ABD0;text-decoration:none;padding:6px 10px;border-radius:8px;font-size:15px}
+  nav a:hover{background:#2B3053;color:#fff}
+  nav a.on{background:var(--accent);color:#fff}
+  .tools{max-width:860px;margin:18px auto 0;padding:0 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .tools button{background:var(--accent);color:#fff;border:0;border-radius:9px;padding:10px 18px;
+    font-size:15px;cursor:pointer;font-family:inherit}
+  .tools button:hover{background:var(--accent-dark)}
+  .tools span{color:var(--muted);font-size:14px}
+
+  .sheet{max-width:860px;margin:18px auto;background:#fff;border:1px solid var(--line);
+    border-radius:10px;padding:26px 30px}
+  .ttl{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;
+    border-bottom:3px solid var(--accent);padding-bottom:9px;margin-bottom:14px}
+  .ttl h1{font-size:21px;margin:0;line-height:1.35}
+  .ttl .me{font-size:13px;color:var(--muted);white-space:nowrap;text-align:right}
+  .ttl .me u{display:inline-block;min-width:85px;text-decoration:none;border-bottom:1px solid var(--line)}
+  h2{font-size:16px;margin:16px 0 7px;color:var(--accent-dark);
+    display:flex;align-items:center;gap:8px}
+  h2::after{content:"";flex:1;height:1px;background:var(--line)}
+  h2:first-of-type{margin-top:4px}
+  p{margin:6px 0}
+  .chk{list-style:none;margin:0;padding:0;columns:2;column-gap:26px;font-size:14.5px}
+  .chk li{break-inside:avoid;margin:0 0 5px;padding-left:22px;position:relative}
+  .chk li::before{content:"";position:absolute;left:0;top:3px;width:13px;height:13px;
+    border:1.5px solid var(--muted);border-radius:3px}
+  .one{columns:1}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .box{border:1px solid var(--line);border-radius:9px;padding:9px 12px}
+  .box > b{display:block;font-size:14.5px;margin-bottom:2px;color:var(--accent-dark)}
+  .box p{margin:0;font-size:13.5px;color:#3A3C5C;line-height:1.55}
+  .lines{border:1px solid var(--line);border-radius:9px;padding:9px 13px;
+    background:repeating-linear-gradient(transparent,transparent 27px,var(--line) 27px,var(--line) 28px);
+    min-height:112px}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:5px 0}
+  th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+  th{background:var(--accent-soft);white-space:nowrap}
+  td.fill{height:30px}
+  .mini{font-size:13px;color:var(--muted);margin-top:5px}
+  .foot{margin-top:16px;padding-top:9px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+  code{background:#F0EFF9;padding:0 4px;border-radius:4px;font-size:13px;
+    font-family:ui-monospace,Consolas,monospace}
+  .p{font-weight:700;color:var(--accent-dark)}
+  .p i{font-style:normal;color:var(--muted);font-weight:400;margin:0 2px}
+  .u{display:inline-block;min-width:110px;border-bottom:1.5px solid var(--accent);height:1.2em;vertical-align:baseline}
+  .u.s{min-width:70px}
+  .addr{font-family:ui-monospace,Consolas,monospace;font-size:13.5px}
+
+  @media (max-width:620px){
+    .chk{columns:1} .grid2,.grid4{grid-template-columns:1fr}
+    .sheet{padding:20px 16px;border-radius:0}
+    .ttl{flex-wrap:wrap}
+  }
+  @media print{
+    @page{size:A4 portrait;margin:12mm}
+    body{background:#fff;font-size:9.3pt;line-height:1.38}
+    nav,.tools{display:none}
+    .sheet{max-width:none;margin:0;border:0;border-radius:0;padding:0;page-break-after:always;overflow:hidden}
+    .sheet:last-child{page-break-after:auto}
+    .ttl h1{font-size:14pt}
+    .ttl{margin-bottom:10px}
+    h2{font-size:10.6pt;margin:7px 0 3px}
+    .lines{min-height:50px}
+    .chk{font-size:9.3pt;line-height:1.55} table{font-size:8.9pt}
+    th,td{padding:4px 7px}
+    td.fill{height:22px}
+    .box p{font-size:8.9pt} .box > b{font-size:9.6pt}
+    .mini{font-size:8.4pt}
+    .sheet > *{break-inside:avoid}
+    .foot{margin-top:8px}
+  }
+  :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  nav :focus-visible{outline-color:#FFD400}
+</style>
+</head>
+<body>
+<nav><div class="in">
+  <a href="portal-guide.html">📘 실습 가이드</a>
+  <a class="on" href="portal-handout.html">🖨️ 인쇄용 유인물</a>
+  <a href="https://biscuitbox.github.io/class-portal-v1/" target="_blank" rel="noopener">🏫 완성 예시 열기</a>
+</div></nav>
+
+<div class="tools">
+  <button onclick="window.print()">인쇄하기</button>
+  <span>A4 두 장 · 양면으로 인쇄하면 한 장이 됩니다 · 자세한 화면 안내는 📘 실습 가이드에 있습니다</span>
+</div>
+
+<!-- ============ 앞면 ============ -->
+<div class="sheet">
+  <div class="ttl">
+    <h1>AI와 함께 만드는 우리 반 안내판</h1>
+    <div class="me">학교 · 학급 <u></u><br>이름 <u></u></div>
+  </div>
+
+  <h2>준비물</h2>
+  <ul class="chk">
+    <li>컴퓨터와 크롬 브라우저</li>
+    <li>구글 계정 (학교 계정이 막히면 개인 Gmail)</li>
+    <li>내가 열 수 있는 메일함 (깃허브 확인 코드)</li>
+    <li>바탕화면에 <code>우리반안내판</code> 폴더</li>
+    <li>파일 탐색기에서 <b>파일 확장명</b> 보이게 켜기</li>
+    <li>AI 도구 하나 — 제미나이(Canvas)·Claude·ChatGPT</li>
+  </ul>
+
+  <h2>내 계정과 주소 — 생길 때마다 적어 두기</h2>
+  <table>
+    <tr><th style="width:27%">사용한 구글 계정</th><td class="fill"></td></tr>
+    <tr><th>AI 도구 · 대화 제목</th><td class="fill"></td></tr>
+    <tr><th>깃허브 아이디</th><td class="fill"></td></tr>
+    <tr><th>저장소 이름</th><td class="fill">권장: <code>class-portal</code></td></tr>
+    <tr><th>내 안내판 주소</th><td class="fill addr">https://<span class="u"></span>.github.io/<span class="u s"></span>/</td></tr>
+    <tr><th>학생용 주소</th><td class="fill addr">내 안내판 주소 끝에 <b>?mode=student</b></td></tr>
+  </table>
+  <p class="mini">비밀번호는 여기에 적지 말고 따로 기억하세요. 깃허브 아이디가 그대로 주소가 되니 영문 소문자로 짧게, 실명은 피합니다.</p>
+
+  <h2>단계별 체크 — 끝낸 단계에 표시</h2>
+  <ul class="chk one">
+    <li><b>1단계 AI로 만들기</b> — 프롬프트 1을 붙여넣었고, 미리보기에서 알림을 추가해 봤다</li>
+    <li><b>2단계 파일로 저장</b> — 폴더의 <code>index.html</code>을 더블클릭하면 크롬에서 안내판이 열린다</li>
+    <li><b>3단계 고치고 더하기</b> — 기능을 하나씩 넣고, 넣을 때마다 다시 저장했다</li>
+    <li><b>4단계 인터넷에 올리기</b> — 교실 TV에서 내 주소로 안내판이 열린다</li>
+    <li><b>5단계 여러 기기 공유</b> — 로그인해서 고친 내용이 다른 기기의 학생용 주소에도 보인다</li>
+  </ul>
+
+  <h2>파일 저장 규칙 (2단계)</h2>
+  <table>
+    <tr><th style="width:27%">받기</th><td>제미나이 <span class="p">내보내기 <i>›</i> 코드 다운로드</span> · 안 되면 코드 복사 → 메모장에 붙여넣기</td></tr>
+    <tr><th>메모장 저장</th><td><span class="p">파일 <i>›</i> 다른 이름으로 저장</span> → 파일 형식 <b>모든 파일(*.*)</b> · 인코딩 <b>UTF-8</b></td></tr>
+    <tr><th>이름</th><td>올리는 파일은 항상 <code>index.html</code> · 보관용 복사본은 <code>index_1.html</code>, <code>index_2.html</code></td></tr>
+    <tr><th>확인</th><td>코드가 <code>&lt;!DOCTYPE html&gt;</code>로 시작해 <code>&lt;/html&gt;</code>로 끝나는가 · "기존 코드 그대로" 같은 생략이 없는가</td></tr>
+  </table>
+
+  <h2>깃허브에 올리는 순서 (4단계)</h2>
+  <table>
+    <tr><th style="width:5%">1</th><td><b>저장소 만들기</b> — 오른쪽 위 <span class="p">＋ <i>›</i> New repository</span> → 이름 <code>class-portal</code> → <b>Public</b> → <b>Add README</b> 켜기 → <b>Create repository</b></td></tr>
+    <tr><th>2</th><td><b>파일 올리기</b> — <span class="p">Add file <i>›</i> Upload files</span> → <code>index.html</code>만 끌어다 놓기 → <b>Commit changes</b></td></tr>
+    <tr><th>3</th><td><b>페이지 켜기(처음 한 번)</b> — <span class="p">Settings <i>›</i> Pages</span> → Branch <b>main</b> · <b>/(root)</b> → <b>Save</b></td></tr>
+    <tr><th>4</th><td><b>확인</b> — 1~2분 뒤 Pages 화면 새로고침 → <b>Your site is live at</b> 주소 열기 · 고친 뒤엔 같은 이름으로 다시 올리고 <b>Ctrl+F5</b></td></tr>
+  </table>
+
+  <h2>프롬프트 작성 공식 — 네 가지를 말해 주세요</h2>
+  <div class="grid4">
+    <div class="box"><b>🎯 목표와 환경</b><p>무엇을, 어디서 열지. "HTML 파일 하나"</p></div>
+    <div class="box"><b>🎨 디자인과 배치</b><p>화면 구성, 글자 크기, 한 화면에 맞추기</p></div>
+    <div class="box"><b>⚙️ 동작 규칙</b><p>누르면 무엇이, 편집은 언제만</p></div>
+    <div class="box"><b>🗄️ 데이터 보관</b><p>저장할지, 새로고침해도 남을지</p></div>
+  </div>
+  <p class="mini">고칠 때는 짧게, 한 번에 하나씩: "학급 이름만 더 크게 해 줘. 나머지는 그대로." · 새 대화에서는 <code>index.html</code>을 첨부하고 "생략 없이 전체 파일로".</p>
+
+  <div class="foot"><span>앞면</span><span>AI와 함께 만드는 우리 반 안내판 · 2026</span></div>
+</div>
+
+<!-- ============ 뒷면 ============ -->
+<div class="sheet">
+  <div class="ttl">
+    <h1>파이어베이스 연결과 내 기록</h1>
+    <div class="me">이름 <u></u></div>
+  </div>
+
+  <h2>내 파이어베이스 — 5단계에서 적어 두기</h2>
+  <table>
+    <tr><th style="width:27%">프로젝트 이름</th><td class="fill"></td></tr>
+    <tr><th>로그인할 선생님 이메일</th><td class="fill"></td></tr>
+    <tr><th>승인된 도메인에 넣은 값</th><td class="fill addr"><span class="u"></span>.github.io &nbsp;<span style="font-family:inherit;color:var(--muted);font-size:12px">(https:// 와 /저장소이름/ 은 빼고)</span></td></tr>
+  </table>
+
+  <h2>파이어베이스 순서 — <code>console.firebase.google.com</code></h2>
+  <ul class="chk one">
+    <li><b>① 프로젝트 만들기</b> — <span class="p">새 Firebase 프로젝트 만들기</span> → 영문 이름 → 애널리틱스 끄기 → 만들기 (결제 정보 등록 안 함)</li>
+    <li><b>② 구글 로그인 켜기</b> — <span class="p">보안 <i>›</i> Authentication <i>›</i> 로그인 방법 <i>›</i> Google</span> → 사용 설정 → 지원 이메일 → 저장</li>
+    <li><b>③ 데이터베이스</b> — <span class="p">데이터베이스 및 스토리지 <i>›</i> Firestore</span> → 데이터베이스 만들기 → Standard → <code>asia-northeast3 (Seoul)</code> → <b>프로덕션 모드</b></li>
+    <li><b>④ 보안 규칙 게시</b> — Firestore <span class="p">규칙</span> 탭 → 전부 지우고 가이드의 규칙 붙여넣기(내 이메일 확인) → <b>게시</b></li>
+    <li><b>⑤ 설정값 복사</b> — <span class="p">⚙ 설정 <i>›</i> 일반 <i>›</i> 내 앱 <i>›</i> &lt;/&gt;</span> → 닉네임 → 앱 등록 → <code>const firebaseConfig = {…};</code> 복사</li>
+    <li><b>⑥ 승인된 도메인</b> — <span class="p">보안 <i>›</i> Authentication <i>›</i> 설정 <i>›</i> 승인된 도메인 <i>›</i> 도메인 추가</span> → <code>아이디.github.io</code></li>
+    <li><b>⑦ AI에게 연결 부탁</b> — 가이드의 파이어베이스 프롬프트에 firebaseConfig·이메일을 넣어 보내기 → 저장 → 다시 올리기</li>
+    <li><b>⑧ 내 주소에서 확인</b> — 구글 로그인 → 알림 추가 → 다른 기기 학생용 주소에서 보이는지 (미리보기·내 컴퓨터 파일에서는 로그인 안 됨)</li>
+  </ul>
+
+  <h2>우리 반 안내판에 넣을 기능 — 고르고, 넣은 것에 표시</h2>
+  <ul class="chk">
+    <li>① 탭 + 주간 시간표 (우리 학교 시정: <span class="u s"></span>)</li>
+    <li>② 타이머</li>
+    <li>③ 자리 · 모둠 · 발표 순서 뽑기 (번호만)</li>
+    <li>④ 학생 화면 <code>?mode=student</code></li>
+    <li>⑤ 오늘 급식 — 교육청 <span class="u s"></span> 학교 <span class="u s"></span></li>
+    <li>⑥ 칠판 · 종이 테마</li>
+    <li>⑦ 알림장 순서 끌어서 바꾸기</li>
+    <li>내 아이디어: <span class="u"></span></li>
+  </ul>
+
+  <h2>자주 나오는 문제</h2>
+  <table>
+    <tr><th style="width:31%">증상 · 오류 글자</th><th>확인할 것</th></tr>
+    <tr><td>더블클릭하면 메모장이 열림</td><td>이름이 <code>index.html.txt</code> — 확장명 보이기 켜고 <code>.txt</code> 지우기</td></tr>
+    <tr><td>한글이 깨짐</td><td>메모장 저장 때 인코딩 <b>UTF-8</b></td></tr>
+    <tr><td>내 주소가 404</td><td>1~2분 대기 · Pages Branch <b>main</b> 저장 · 파일 이름 <code>index.html</code> · 폴더 안에 들어가지 않았나</td></tr>
+    <tr><td>다른 기기에 내용이 없음</td><td>정상 — 기기·주소마다 따로 저장됨. 5단계로 공유</td></tr>
+    <tr><td><code>auth/unauthorized-domain</code></td><td>⑥ 승인된 도메인에 <code>아이디.github.io</code></td></tr>
+    <tr><td><code>auth/popup-blocked</code></td><td>주소창 오른쪽 팝업 차단 → 항상 허용</td></tr>
+    <tr><td><code>permission-denied</code></td><td>④ 규칙 <b>게시</b>했나 · 규칙 이메일과 로그인 계정이 똑같나</td></tr>
+  </table>
+
+  <h2>막혔던 것과 해결한 방법</h2>
+  <div class="lines"></div>
+
+  <h2>지킬 것</h2>
+  <ul class="chk">
+    <li>학생 이름 대신 <b>번호</b>로 쓴다</li>
+    <li>AI에게 학생 개인정보를 적지 않는다</li>
+    <li>firebaseConfig 말고 <b>비밀 키·비밀번호</b>는 어디에도 넣지 않는다</li>
+    <li>올리기 전에 직접 눌러 확인한다 — AI도 틀린다</li>
+  </ul>
+
+  <div class="foot"><span>뒷면</span><span>자세한 화면 안내 · 복사용 프롬프트 · 보안 규칙은 📘 실습 가이드</span></div>
+</div>
+
+</body>
+</html>
